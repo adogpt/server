@@ -9,6 +9,22 @@ app.set('port', (process.env.PORT || 8080));
 
 app.listen(app.get('port'));
 
+var overview = "<html> \
+<h1>Server for adogpt. Can get list of pets, whether or not you matched, set of messages.</h1><br>\
+Here are the endpoints: <br><br>\
+<b>&#x2Fget-pet</b>: returns JSON pet data - call when you want to look at another pet<br>\
+<b>&#x2Fget-match</b>: returns whether or not you matched with that particular pet - call when you swipe right <br>\
+<b>&#x2Fget-msg</b>: returns ordered, hardcoded set of messages from a person.<br>\
+<b>&#x2Fget-msg-reset</b>: starts reading messages from the start<br>\
+<br>\
+Currently, there is no query for location or species. Let me know if/how this is implemented on frontend first and ill add it<br>\
+</html>\
+"
+
+app.get('/', function (req, res) {
+    res.send(overview);
+})
+
 // pet info
 
 var pets = [{ "images": [
@@ -301,7 +317,7 @@ app.get('/get-pet', function (req, res) {
 })
 
 
-app.get('/match', function (req, res) {
+app.get('/get-match', function (req, res) {
     if (pet_count > 3) {
         res.json({
             match: pet_count,
@@ -335,5 +351,13 @@ app.get('/get-msg', function (req, res) {
     });
     message_count = (message_count + 1) % messages.length;       
 })
+
+app.get('/get-msg-reset', function (req, res) {
+    res.json({
+        reset: true
+    });   
+    message_count = 0;
+})
+
 
 module.exports = app;
