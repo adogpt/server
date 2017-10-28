@@ -4,7 +4,10 @@ const parser = require("body-parser");
 
 app.use(parser.urlencoded({extended : true}));
 
-app.listen(8080);
+
+app.set('port', (process.env.PORT || 8080));
+
+app.listen(app.get('port'));
 
 // pet info
 
